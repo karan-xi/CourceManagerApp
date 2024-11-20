@@ -1,0 +1,70 @@
+﻿@model CourceManagerApp.Models.Course
+
+<h2>Manage your course</h2>
+
+<!-- Navigation links -->
+<p>
+    <a href="/Courses">All courses</a> |
+    <a href="/Courses/Edit/@Model.Id">Edit this course</a> |
+    <a href="/Courses/Create">Add new course</a>
+</p>
+
+<h3>Course summary:</h3>
+<p>
+    The course "<strong>@Model.Name</strong>" is in room <strong>@Model.RoomNumber</strong>
+    starting on <strong>@Model.StartDate.ToShortDateString()</strong>, and the instructor is
+    "<strong>@Model.Instructor</strong>".
+</p>
+
+<h3>Students:</h3>
+
+<!-- Student list -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Enrollment Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>@student.Status.ToString().Replace('_', ' ')</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Add a new student</h4>
+
+<!-- Form to add a student to the course -->
+<form method="post" asp-controller="Courses" asp-action="AddStudent">
+    <input type="hidden" name="CourseId" value="@Model.Id" />
+    <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" id="Name" name="Name" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email:</label>
+        <input type="email" id="Email" name="Email" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Student</button>
+</form>
+
+<h4>Actions:</h4>
+
+<!-- Placeholder for additional actions, e.g., sending confirmation messages -->
+<button class="btn btn-secondary">Send Confirmation Messages</button>
+
+@section Scripts {
+    <script>
+        document.querySelector('.btn-secondary').addEventListener('click', function () {
+            alert('Sending confirmation messages to all students...');
+        });
+    </script>
+}
